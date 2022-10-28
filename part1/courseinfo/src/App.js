@@ -2,15 +2,22 @@ const Header = (props) => {
     return (<h1>{props.course}</h1>)
 }
 
-const Content = (props) => props.parts.map(
-    (part, index) => (
-        <p key={index}>
-            {part.name} {part.exercises} {index}
-        </p>
-    )
+const Part = (props) =>
+(
+    <p>
+        {props.name} {props.exercises}
+    </p>
 )
 
-const Footer = (props) => (<p>Number of exercises {props.parts.reduce((prev, cur) => prev + cur.exercises, 0)}</p>)
+const Content = (props) => props.parts.map(
+    (part, index) => (<Part key={index} name={part.name} exercises={part.exercises} />)
+)
+
+const Footer = (props) => (
+    <p>
+        Number of exercises {props.parts.reduce((prev, cur) => prev + cur.exercises, 0)}
+    </p>
+)
 
 const App = () => {
     const course = 'Half Stack application development'

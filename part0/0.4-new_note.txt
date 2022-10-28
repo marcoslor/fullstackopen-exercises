@@ -1,0 +1,14 @@
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: 200 notes.html
+note over browser:
+Browser fetches all resources
+included on the html
+end note
+note over browser:
+User fills the form and
+hit the 'Submit' button
+end note
+browser->server:POST https://studies.cs.helsinki.fi/exampleapp/new_note {note: "foo bar"}
+server-->browser: 302 response header with "location: /exampleapp/notes"
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: notes (.html)

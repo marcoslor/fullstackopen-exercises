@@ -1,0 +1,31 @@
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: spa (.html)
+activate browser
+note over browser:
+Browser rederers the HTML
+and start fetching resources
+end note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server-->browser: spa.js
+note over browser:
+Browser evaluates the JS code
+and initiates a GET request
+end note
+browser->server: XHR HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: data.json  [{ content: "HTML is easy", date: "2019-05-23" }, ...]
+note over browser:
+Browser renders the notes
+end note
+note over browser:
+Alice inputs a new note,
+and hits submit
+end note
+browser->server: XHR HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa {content: "foo bar", date: ...}
+server-->browser: 201 {message: "note created"}
+browser->server: XHR HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: data.json  [{ content: "foobar", date: ... }, ...]
+note over browser:
+Browser re-renders the notes
+end note

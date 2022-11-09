@@ -1,0 +1,20 @@
+#root {
+    text-align: center;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.message.success {
+    border: #002800 solid 1px;
+    color: #002800;
+    background-color: greenyellow;
+}
+
+.message.error {
+    border: #800000 solid 1px;
+    color: #800000;
+    background-color: #ffcccc;
+}

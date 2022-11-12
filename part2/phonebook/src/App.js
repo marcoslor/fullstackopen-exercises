@@ -77,6 +77,8 @@ const App = () => {
     personsService.create(newPerson).then((returnedPerson) => {
       setPersons(persons.concat(returnedPerson));
       createSuccessMessage(`Added ${newPerson.name}`);
+    }).catch((error) => {
+      createErrorMessage(error.response.data.error);
     });
   };
 

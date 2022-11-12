@@ -12,3 +12,7 @@ E.g., commit "Exercise 2.14: resolution" contains the sorce code for the resolut
 
 There are a few exceptions for this, where there were more than one commit per exercise series.
 Also, for some practical exercises, the project folder in that part of the course contains evidence of the exercise resolution, and useful links, like the repo containing deployed code.
+
+## Projects from exercises
+
+Part 3 [Phonebook Backend]: [Repository Link](part3/phonebook-app-deploy/README.md)

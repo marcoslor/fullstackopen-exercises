@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === "test") {
 const config = {
   MONGODB_URI: process.env.MONGODB_URI,
   PORT: process.env.PORT,
+  SECRET: process.env.SECRET,
 };
 
 module.exports = config;

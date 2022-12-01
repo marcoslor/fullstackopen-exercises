@@ -79,7 +79,7 @@ describe("total likes", () => {
   });
 
   test("of a bigger list is calculated right", () => {
-    expect(listHelper.totalLikes(blogsBigList)).toBe(10);
+    expect(listHelper.totalLikes(blogsBigList)).toBe(36);
   });
 });
 

@@ -1,0 +1,29 @@
+.alert {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.alert button {
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0;
+    outline: inherit;
+    opacity: 0.75;
+}
+
+.alert button:hover {
+    opacity: 1;
+}
+
+.alert.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.alert.error {
+    background-color: #f44336;
+    color: white;
+}

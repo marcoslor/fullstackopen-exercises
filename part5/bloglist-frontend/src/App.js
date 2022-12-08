@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import BlogList from "./components/BlogList";
 import Login from "./components/Login";
+
 import blogService from "./services/blogs";
 import style from "./css/App.css";
 
@@ -41,40 +42,31 @@ const Notifications = ({ notifications, destroyNotification }) => {
   );
 };
 
-const LogoutButton = ({ setToken }) => {
-  const onClick = () => {
-    setToken(null);
-  };
-
-  return <button onClick={onClick}>Logout</button>;
-};
-
-
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [token, setToken] = useState(retriveToken());
+  // This is kept to trigger a re-render when a notification is added to the ref
   const [notifications, setNotifications] = useState([]);
 
+  const initialized = useRef(false);
   const notificationsRef = useRef([]);
 
-  useEffect(() => {
-    if (token) {
-      blogService.getAll(token.token).then((blogs) => {
-        console.log("blogs", blogs);
+  // This replaces the componentDidMount() lifecycle method, and useEffect()
+  const initialize = () => {
+    initialized.current = true;
+
+    const retrivedToken = JSON.parse(window.localStorage.getItem("token"));
+    setToken(retrivedToken);
+    if (retrivedToken) {
+      blogService.getAll(retrivedToken.token).then((blogs) => {
         setBlogs(blogs);
       });
     }
-  }, []);
+  }
 
-  useEffect(() => {
-    localStorage.setItem("token", JSON.stringify(token));
-    
-    if (token) {
-      blogService.getAll(token.token).then((blogs) => setBlogs(blogs));
-    } else {
-      setBlogs([]);
-    }
-  }, [token]);
+  if (!initialized.current) {
+    initialize();
+  }
 
   const destroyNotification = (uuid) => {
     clearTimeout(

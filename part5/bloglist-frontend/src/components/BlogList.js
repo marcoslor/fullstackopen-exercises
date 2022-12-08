@@ -1,5 +1,6 @@
 import Blog from "./Blog";
 import blogService from "../services/blogs";
+import Togglable from "./Togglable";
 
 const LogoutButton = ({ setToken, addNotification, clearAllNotifications }) => {
   const onClick = () => {
@@ -14,13 +15,16 @@ const LogoutButton = ({ setToken, addNotification, clearAllNotifications }) => {
 const CreateBlog = ({ token, setBlogs, addNotification }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
-    const title = e.target.title.value;
-    const author = e.target.author.value;
-    const url = e.target.url.value;
+
+    const blog = {
+      title: e.target.title.value,
+      author: e.target.author.value,
+      url: e.target.url.value
+    };
 
     try {
-      await blogService.create(title, author, url, token.token);
-      addNotification(`Blog "${title}" created successfully`, "success");
+      await blogService.create(blog, token.token);
+      addNotification(`Blog "${blog.title}" created successfully`, "success");
     } catch (error) {
       addNotification(error.response.data.error, "error");
     }
@@ -56,6 +60,7 @@ const BlogList = ({
   addNotification,
   clearAllNotifications,
 }) => {
+  const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
   return (
     <>
       <div>
@@ -66,14 +71,20 @@ const BlogList = ({
           clearAllNotifications={clearAllNotifications}
         />
       </div>
-      <CreateBlog
-        token={token}
-        setBlogs={setBlogs}
-        addNotification={addNotification}
-      />
+      <Togglable openButtonText="Add blog post" closeButtonText={"Cancel"}>
+        <CreateBlog
+          token={token}
+          setBlogs={setBlogs}
+          addNotification={addNotification}
+        />
+      </Togglable>
+
       <h2>Blogs</h2>
-      {blogs?.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+
+      {sortedBlogs?.map((blog) => (
+        <Togglable key={blog.id} teaser={blog.title}>
+          <Blog blog={blog} blogs={blogs} token={token} setBlogs={setBlogs} />
+        </Togglable>
       ))}
     </>
   );

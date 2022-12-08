@@ -14,6 +14,7 @@ const Login = ({
     try {
       const result = await loginService.login(username, password);
       setToken(result);
+      localStorage.setItem("token", JSON.stringify(result));
 
       const blogs = await blogService.getAll(result.token);
       setBlogs(blogs);

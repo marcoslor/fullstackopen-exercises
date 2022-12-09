@@ -1,29 +1,9 @@
-import loginService from "../services/login";
-import blogService from "../services/blogs";
-
-const Login = ({
-  setToken,
-  addNotification,
-  setBlogs,
-  clearAllNotifications,
-}) => {
+const Login = ({ login }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const username = e.target.username.value;
     const password = e.target.password.value;
-    try {
-      const result = await loginService.login(username, password);
-      setToken(result);
-      localStorage.setItem("token", JSON.stringify(result));
-
-      const blogs = await blogService.getAll(result.token);
-      setBlogs(blogs);
-
-      clearAllNotifications();
-      addNotification("Logged in successfully", "success");
-    } catch (error) {
-      addNotification(error.response.data.error, "error");
-    }
+    login(username, password);
   };
 
   return (

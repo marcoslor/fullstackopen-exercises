@@ -3,8 +3,11 @@ import BlogList from "./components/BlogList";
 import Login from "./components/Login";
 
 import blogService from "./services/blogs";
+import loginService from "./services/login";
 
 import "./css/App.css";
+import Togglable from "./components/Togglable";
+import CreateBlog from "./components/CreateBlog";
 
 const retriveToken = () => {
   const token = JSON.parse(window.localStorage.getItem("token"));
@@ -64,7 +67,6 @@ const App = () => {
       });
     }
   };
-
   if (!initialized.current) {
     initialize();
   }
@@ -83,7 +85,6 @@ const App = () => {
     notificationsRef.current = updatedNotifications;
     setNotifications(updatedNotifications);
   };
-
   const addNotification = (message, type) => {
     const notificationUUID = Math.random().toString(36).substring(7);
 
@@ -101,7 +102,6 @@ const App = () => {
     setNotifications(notificationsRef.current.concat(notification));
     notificationsRef.current = notificationsRef.current.concat(notification);
   };
-
   const clearAllNotifications = () => {
     notificationsRef.current.forEach((notification) => {
       clearTimeout(notification.timeout);
@@ -109,6 +109,60 @@ const App = () => {
 
     notificationsRef.current = [];
     setNotifications([]);
+  };
+
+  const login = async (username, password) => {
+    try {
+      const result = await loginService.login(username, password);
+      setToken(result);
+      localStorage.setItem("token", JSON.stringify(result));
+
+      const blogs = await blogService.getAll(result.token);
+      setBlogs(blogs);
+
+      clearAllNotifications();
+      addNotification("Logged in successfully", "success");
+    } catch (error) {
+      addNotification(error.response.data.error, "error");
+    }
+  };
+  const logout = () => {
+    setToken(null);
+    clearAllNotifications();
+    addNotification("Logged out successfully", "success");
+  };
+
+  const submitBlog = async (blog) => {
+    try {
+      await blogService.create(blog, token.token);
+      addNotification(`Blog "${blog.title}" created successfully`, "success");
+    } catch (error) {
+      addNotification(error.response.data.error, "error");
+    }
+
+    const updatedBlogs = await blogService.getAll(token.token);
+    setBlogs(updatedBlogs);
+  };
+  const likePost = async (blog) => {
+    blogService.put(
+      blog.id,
+      {
+        likes: blog.likes + 1,
+      },
+      token.token
+    );
+
+    setBlogs(
+      blogs.map((b) =>
+        b.id === blog.id ? { ...blog, likes: blog.likes + 1 } : b
+      )
+    );
+  };
+  const removePost = async (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      blogService.remove(blog.id, token.token);
+      setBlogs(blogs.filter((b) => b.id !== blog.id));
+    }
   };
 
   return (
@@ -119,22 +173,17 @@ const App = () => {
         destroyNotification={destroyNotification}
       />
       {(token && (
-        <BlogList
-          blogs={blogs}
-          setBlogs={setBlogs}
-          token={token}
-          setToken={setToken}
-          addNotification={addNotification}
-          clearAllNotifications={clearAllNotifications}
-        />
-      )) || (
-        <Login
-          setToken={setToken}
-          setBlogs={setBlogs}
-          addNotification={addNotification}
-          clearAllNotifications={clearAllNotifications}
-        />
-      )}
+        <>
+          <div>
+            <span>Hello, {token.username}</span>{" "}
+            <button onClick={logout}>Logout</button>
+          </div>
+          <Togglable openButtonText="Add blog post" closeButtonText={"Cancel"}>
+            <CreateBlog submitBlog={submitBlog} />
+          </Togglable>
+          <BlogList blogs={blogs} likePost={likePost} removePost={removePost} />
+        </>
+      )) || <Login login={login} />}
     </>
   );
 };

@@ -1,5 +1,5 @@
-import loginService from '../services/login';
-import blogService from '../services/blogs';
+import loginService from "../services/login";
+import blogService from "../services/blogs";
 
 const Login = ({
   setToken,
@@ -18,7 +18,7 @@ const Login = ({
 
       const blogs = await blogService.getAll(result.token);
       setBlogs(blogs);
-      
+
       clearAllNotifications();
       addNotification("Logged in successfully", "success");
     } catch (error) {

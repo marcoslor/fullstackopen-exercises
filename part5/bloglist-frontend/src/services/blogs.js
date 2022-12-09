@@ -44,7 +44,7 @@ const put = async (id, blog, token) => {
   }
 
   return response.data;
-}
+};
 
 const remove = async (id, token) => {
   const response = await axios.delete(`${baseUrl}/${id}`, {
@@ -58,6 +58,6 @@ const remove = async (id, token) => {
   }
 
   return response.data;
-}
+};
 
 export default { getAll, create, put, remove };

@@ -3,7 +3,8 @@ import BlogList from "./components/BlogList";
 import Login from "./components/Login";
 
 import blogService from "./services/blogs";
-import style from "./css/App.css";
+
+import "./css/App.css";
 
 const retriveToken = () => {
   const token = JSON.parse(window.localStorage.getItem("token"));
@@ -62,7 +63,7 @@ const App = () => {
         setBlogs(blogs);
       });
     }
-  }
+  };
 
   if (!initialized.current) {
     initialize();
@@ -78,7 +79,7 @@ const App = () => {
     const updatedNotifications = notificationsRef.current.filter(
       (notification) => notification.uuid !== uuid
     );
-    
+
     notificationsRef.current = updatedNotifications;
     setNotifications(updatedNotifications);
   };
@@ -108,7 +109,7 @@ const App = () => {
 
     notificationsRef.current = [];
     setNotifications([]);
-  }
+  };
 
   return (
     <>

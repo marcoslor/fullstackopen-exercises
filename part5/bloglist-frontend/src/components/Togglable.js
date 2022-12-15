@@ -12,14 +12,14 @@ const Togglable = ({ openButtonText, closeButtonText, teaser, children }) => {
       {visible ? (
         <>
           {children}
-          <button onClick={toggleVisibility}>
+          <button onClick={toggleVisibility} className="togglable--close">
             {closeButtonText || "Close"}
           </button>
         </>
       ) : (
         <>
           {teaser}
-          <button onClick={toggleVisibility}>{openButtonText || "Open"}</button>
+          <button onClick={toggleVisibility} className="togglable--open">{openButtonText || "Open"}</button>
         </>
       )}
     </div>

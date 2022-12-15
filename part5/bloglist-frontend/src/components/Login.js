@@ -9,18 +9,21 @@ const Login = ({ login }) => {
   return (
     <>
       <h1>Login</h1>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="username">Username</label>
-        <input type="text" name="username" placeholder="user" required />
-        <br />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="password"
-          required
-        />
-        <br />
+      <form onSubmit={onSubmit} id="login">
+        <div>
+          <label htmlFor="username">Username</label>
+          <input type="text" name="username" id="username" placeholder="user" required />
+        </div>
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="password"
+            required
+          />
+        </div>
         <input type="submit" value="Login" />
       </form>
     </>

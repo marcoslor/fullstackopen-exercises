@@ -6,6 +6,7 @@ if (process.env.NODE_ENV === "test") {
 }
 
 const config = {
+  NODE_ENV: process.env.NODE_ENV,
   MONGODB_URI: process.env.MONGODB_URI,
   PORT: process.env.PORT,
   SECRET: process.env.SECRET,

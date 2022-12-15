@@ -123,6 +123,7 @@ const App = () => {
       clearAllNotifications();
       addNotification("Logged in successfully", "success");
     } catch (error) {
+      console.log(error);
       addNotification(error.response.data.error, "error");
     }
   };

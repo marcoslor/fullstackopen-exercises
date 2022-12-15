@@ -7,11 +7,12 @@ const Blog = ({ blog, likePost, removePost }) => {
         <li>{blog.title}</li>
         <li>{blog.author}</li>
         <li>{blog.url}</li>
-        <li>{blog.likes} <button onClick={() => likePost(blog)}>like</button></li>
+        <li>Likes: {blog.likes} <button className="blog--like" onClick={() => likePost(blog)}>like</button></li>
       </ul>
-      <button onClick={() => removePost(blog)}>remove</button>
+      <button className="blog--remove" onClick={() => removePost(blog)}>remove</button>
     </div>
-  );};
+  );
+};
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,

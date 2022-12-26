@@ -1,35 +1,16 @@
-// Constant functions and objects
-const updateObject = (oldObject, newValues) => {
-  return Object.assign({}, oldObject, newValues);
-};
+import { createSlice } from "@reduxjs/toolkit";
 
-const updateListWithItem = (array, itemId, newItem) => {
-  return array.map((item) => (item.id !== itemId ? item : newItem));
-};
+/* Helpers */
 
-const getId = () => {
-    return (100000 * Math.random()).toFixed(0);
-};
+const getId = () => (100000 * Math.random()).toFixed(0);
 
-const anecdoteAsObject = anecdote => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0,
-  };
-};
+const anecdoteAsObject = (anecdote) => ({
+  content: anecdote,
+  id: getId(),
+  votes: 0,
+});
 
-const createReducer = (initialState, handlers) => {
-  return function reducer(state = initialState, action) {
-    if (handlers.hasOwnProperty(action.type)) {
-      return handlers[action.type](state, action);
-    } else {
-      return state;
-    }
-  };
-};
-
-// Initial state
+/* Initial state */
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -42,41 +23,26 @@ const anecdotesAtStart = [
 
 const initialState = anecdotesAtStart.map(anecdoteAsObject);
 
-// Reducer
+/* Reducer */
 
-const voteAnecdote = (state, action) => {
-  const id = action.data.id;
+// State inside reducers is managed by Immer, so we can mutate it
+const anecdotesSlice = createSlice({
+  name: "anecdotes",
+  initialState,
+  reducers: {
+    voteAnecdote(state, action) {
+      const id = action.payload;
+      const anecdoteToVote = state.find((anecdote) => {
+        return anecdote.id === id;
+      });
+      anecdoteToVote.votes += 1;
+    },
+    addAnecdote(state, action) {
+      const anecdote = action.payload;
+      state.push(anecdoteAsObject(anecdote));
+    },
+  },
+}); 
 
-  const anecdoteToVote = state.find((a) => a.id === id);
-  const votedAnecdote = updateObject(anecdoteToVote, {
-    votes: anecdoteToVote.votes + 1,
-  });
-
-  return updateListWithItem(state, id, votedAnecdote);
-};
-
-const addAnecdote = (state, action) => {
-  const anecdote = action.data;
-  return state.concat(anecdote);
-};
-
-const anecdoteReducer = createReducer(initialState, {
-  VOTE: voteAnecdote,
-  ADD: addAnecdote,
-});
-
-const voteAction = id => {
-  return {
-    type: 'VOTE',
-    data: { id }
-  };
-};
-
-const addAction = anecdoteTitle => {
-  return {
-    type: 'ADD',
-    data: anecdoteAsObject(anecdoteTitle)
-  };
-};
-
-export { anecdoteReducer, voteAction, addAction };
+export default anecdotesSlice.reducer;
+export const { voteAnecdote, addAnecdote } = anecdotesSlice.actions;

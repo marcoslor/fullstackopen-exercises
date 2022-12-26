@@ -1,22 +1,24 @@
 import { useDispatch } from "react-redux";
-import { addAction } from "../reducers/anecdoteReducer";
+import { addAnecdote } from "../reducers/anecdoteReducer";
+import { setNotification } from "../reducers/notificationReducer";
 import { useRef } from "react";
 
 const CreateAnecdoteForm = () => {
   const dispatch = useDispatch();
   const anecdoteRef = useRef("");
 
-  const addAnecdote = (event) => {
+  const submitForm = (event) => {
     event.preventDefault();
 
-    dispatch(addAction(anecdoteRef.current.value));
+    dispatch(addAnecdote(anecdoteRef.current.value));
+    dispatch(setNotification(`You created "${anecdoteRef.current.value}"`));
     anecdoteRef.current.value = "";
   };
 
   return (
-    <form onSubmit={addAnecdote}>
+    <form onSubmit={submitForm}>
       <div>
-        <input ref={anecdoteRef}/>
+        <input ref={anecdoteRef} />
       </div>
       <button>create</button>
     </form>

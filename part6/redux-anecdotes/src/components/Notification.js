@@ -1,4 +1,21 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux"
+import { setNotification } from "../reducers/notificationReducer"
+
 const Notification = () => {
+  const notificationState = useSelector(state => state.notification)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const t = setTimeout(() => dispatch(setNotification("")), 5000)
+
+    return () => clearTimeout(t)
+  }, [dispatch, notificationState]);
+
+  if (notificationState === "") {
+    return
+  }
+
   const style = {
     border: 'solid',
     padding: 10,
@@ -6,7 +23,7 @@ const Notification = () => {
   }
   return (
     <div style={style}>
-      render here notification...
+      {notificationState}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { voteAnecdote } from "../reducers/anecdoteReducer";
 import { setNotification } from "../reducers/notificationReducer";
 import Filter from "./Filter";
+import anecdotesService from "../services/anecdotes";
 
 const AnecdotesList = () => {
   const anecdotesStore = useSelector((state) => state.anecdotes);
@@ -9,15 +10,17 @@ const AnecdotesList = () => {
 
   const dispatch = useDispatch();
 
-  const vote = (id) => {
-    dispatch(voteAnecdote(id));
-    dispatch(
-      setNotification(
-        `You voted for "${
-          anecdotesStore.find((anecdote) => anecdote.id === id).content
-        }"`
-      )
-    );
+  const vote = (anecdote) => {
+    anecdotesService
+      .update(anecdote.id, { ...anecdote, votes: anecdote.votes + 1 })
+      .then((anecdote) => {
+        dispatch(voteAnecdote(anecdote));
+        dispatch(
+          setNotification(
+            `You voted for "${anecdote.content}"`
+          )
+        );
+      });
   };
 
   const anecdotesToShow = anecdotesStore.filter((anecdote) => anecdote.content.includes(filterStore));
@@ -31,7 +34,7 @@ const AnecdotesList = () => {
             <div>{anecdote.content}</div>
             <div>
               has {anecdote.votes}
-              <button onClick={() => vote(anecdote.id)}>vote</button>
+              <button onClick={() => vote(anecdote)}>vote</button>
             </div>
           </li>
         ))}

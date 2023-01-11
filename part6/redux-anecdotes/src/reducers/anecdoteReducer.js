@@ -25,13 +25,13 @@ const initialState = anecdotesAtStart.map(anecdoteAsObject);
 
 /* Reducer */
 
-// State inside reducers is managed by Immer, so we can mutate it
+// State inside reducers is managed by Immer, so we can either mutate it, or return a new value
 const anecdotesSlice = createSlice({
   name: "anecdotes",
-  initialState,
+  initialState: [],
   reducers: {
     voteAnecdote(state, action) {
-      const id = action.payload;
+      const id = action.payload.id;
       const anecdoteToVote = state.find((anecdote) => {
         return anecdote.id === id;
       });
@@ -39,10 +39,14 @@ const anecdotesSlice = createSlice({
     },
     addAnecdote(state, action) {
       const anecdote = action.payload;
-      state.push(anecdoteAsObject(anecdote));
+      state.push(anecdote);
     },
+    setAnecdotes(state, action) {
+      const anecdotes = action.payload;
+      return anecdotes;
+    }
   },
 }); 
 
 export default anecdotesSlice.reducer;
-export const { voteAnecdote, addAnecdote } = anecdotesSlice.actions;
+export const { voteAnecdote, addAnecdote, setAnecdotes } = anecdotesSlice.actions;

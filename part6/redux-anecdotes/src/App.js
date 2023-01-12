@@ -1,13 +1,10 @@
 import CreateAnecdoteForm from './components/CreateAnecdoteForm'
 import AnecdotesList from './components/AnecdotesList'
 import Notification from './components/Notification'
-import anecdotesService from "./services/anecdotes";
-import { setAnecdotes } from "./reducers/anecdoteReducer";
+import { initializeAnecdotes } from "./reducers/anecdoteReducer";
 import store from "./store";
 
-anecdotesService
-  .getAll()
-  .then((anecdotes) => store.dispatch(setAnecdotes(anecdotes)));
+store.dispatch(initializeAnecdotes());
 
 const App = () => {
   return (

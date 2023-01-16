@@ -2,7 +2,7 @@ const supertest = require("supertest");
 const app = require("../app");
 
 const Blog = require("../models/blog");
-const User = require("../models/user");
+const User = require("../models/User");
 
 const mongoose = require("mongoose");
 const { createBlog } = require("../utils/model_factory");

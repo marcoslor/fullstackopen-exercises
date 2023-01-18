@@ -1,9 +1,8 @@
 const blogsRouter = require("express").Router();
-const { Mongoose } = require("mongoose");
 const Blog = require("../models/Blog");
 
 const validateFields = (req, res, next) => {
-  const validFields = ["title", "author", "url", "likes"];
+  const validFields = ["title", "author", "url", "likes", ""];
 
   // Check that no invalid fields are present
   const invalidFields = Object.keys(req.body).filter(
@@ -16,8 +15,6 @@ const validateFields = (req, res, next) => {
   }
   next();
 };
-
-blogsRouter.use(validateFields);
 
 blogsRouter.get("/", async (request, response) => {
   const user = request.user;
@@ -77,11 +74,23 @@ blogsRouter.put("/:id", async (request, response) => {
   const blogToUpdate = await Blog.findById(id);
 
   if (blogToUpdate && blogToUpdate.user.toString() === user.id.toString()) {
-    await Blog.findByIdAndUpdate(id, blog, { new: true });
-    response.status(204).end();
+    const updated = await Blog.findByIdAndUpdate(id, blog, { new: true });
+    response.json(updated);
   } else {
     response.status(400).end();
   }
 });
 
+blogsRouter.post("/:id/comments", async (request, response) => {
+  const { id } = request.params;
+  const comment = request.body.comment;
+
+  const blog = await Blog.findById(id);
+
+  if (blog) {
+    blog.comments = blog.comments.concat(comment);
+    await blog.save();
+    response.json(blog);
+  }
+});
 module.exports = blogsRouter;

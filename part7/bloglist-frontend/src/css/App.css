@@ -1,0 +1,10 @@
+.togglable {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.blog {
+  margin-bottom: 1rem;
+}

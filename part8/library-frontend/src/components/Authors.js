@@ -7,10 +7,11 @@ const Authors = (props) => {
     refetchQueries: [{ query: ALL_AUTHORS }],
   });
 
-  if (!props.show || result.loading) {
+  const authors = result.data?.allAuthors;
+
+  if (!props.show || result.loading || !authors) {
     return null;
   }
-  const authors = result.data.allAuthors;
 
   const submit = async (event) => { 
     event.preventDefault();
@@ -30,7 +31,7 @@ const Authors = (props) => {
             <th>books</th>
           </tr>
           {authors.map((a) => (
-            <tr key={a.name}>
+            <tr key={a.id}>
               <td>{a.name}</td>
               <td>{a.born}</td>
               <td>{a.bookCount}</td>
@@ -45,7 +46,7 @@ const Authors = (props) => {
           <label htmlFor="name">name</label>
           <select name="name" id="name">
             {authors.map((a) => (
-              <option key={a.name} value={a.name}>
+              <option key={a.id} value={a.name}>
                 {a.name}
               </option>
             ))}

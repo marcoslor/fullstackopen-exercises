@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMutation } from "@apollo/client";
-import { CREATE_BOOK, ALL_BOOKS } from '../queries';
+import { CREATE_BOOK, BOOK_DETAILS_FRAGMENT } from "../queries";
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -9,9 +9,28 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
 
+  const addBookUpdate = (cache, response) =>
+    cache.modify({
+      fields: {
+        allBooks(existingBooks = []) {
+          const newBookRef = cache.writeFragment({
+            data: response.data.addBook,
+            fragment: BOOK_DETAILS_FRAGMENT,
+          });
+
+          // If the new book is already in the cache, don't add it again.
+          if (existingBooks.some((book) => book.__ref === newBookRef.__ref)) {
+            return existingBooks;
+          }
+
+          return [...existingBooks, newBookRef];
+        },
+      },
+    });
+
   const [createBook] = useMutation(CREATE_BOOK, {
-    refetchQueries: [ { query: ALL_BOOKS } ]
-  })
+    update: addBookUpdate,
+  });
   
   if (!props.show) {
     return null
@@ -20,7 +39,7 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    createBook({ variables: { title, author, published: Number(published), genres } })
+    createBook({ variables: { title, authorName: author, published: Number(published), genres } })
     
     setTitle('')
     setPublished('')

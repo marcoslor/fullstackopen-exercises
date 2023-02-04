@@ -32,23 +32,4 @@ const calculateBmi = (height: number, weight: number): string => {
     return 'Obese (Class III)';
 }
 
-const parseParams = (args: Array<string>): { height: number, weight: number } => {
-    if (args.length < 4) {
-        throw new Error('Not enough arguments');
-    }
-    if (args.length > 4) {
-        throw new Error('Too many arguments');
-    }
-    if (isNaN(Number(args[2])) || isNaN(Number(args[3]))) {
-        throw new Error('Provided values were not numbers!');
-    }
-    return {
-        height: Number(args[2]),
-        weight: Number(args[3])
-    };
-}
-
-const { height, weight } = parseParams(process.argv);
-console.log(calculateBmi(height, weight));
-
-export {};
+export default calculateBmi;

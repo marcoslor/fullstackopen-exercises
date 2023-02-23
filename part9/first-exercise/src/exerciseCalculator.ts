@@ -33,22 +33,4 @@ const calculateExercises = (hoursLog: number[], target: number) => {
     } as Result;
 }
 
-const parseParams = (args: Array<string>): { hoursLog: number[], target: number } => {
-    if (args.length < 4) {
-        throw new Error('Not enough arguments');
-    }
-    const hoursLog = args.slice(3).map(h => Number(h));
-    if (hoursLog.some(h => isNaN(h))) {
-        throw new Error('Provided values were not numbers!');
-    }
-    return {
-        hoursLog,
-        target: Number(args[2])
-    };
-}
-
-const { hoursLog, target } = parseParams(process.argv);
-
-console.log(calculateExercises(hoursLog, target));
-
-export {};
+export default calculateExercises ;

@@ -1,4 +1,12 @@
-type Gender = "other" | "female" | "male";
+import { z } from "zod";
+import {
+  PatientRecordValidator,
+  PublicPatientRecordValidator,
+  NewPatientEntryValidator,
+  GenderValidator,
+} from "../validators";
+
+type Gender = z.infer<typeof GenderValidator>;
 
 interface DiagnosisRecord {
   code: string;
@@ -6,15 +14,16 @@ interface DiagnosisRecord {
   latin?: string;
 }
 
-interface PatientRecord {
-  id: string;
-  name: string;
-  dateOfBirth: string;
-  ssn: string;
-  gender: Gender;
-  occupation: string;
-}
+type PatientRecord = z.infer<typeof PatientRecordValidator>;
 
-type PublicPatientRecord = Omit<PatientRecord, "ssn">;
+type PublicPatientRecord = z.infer<typeof PublicPatientRecordValidator>;
 
-export { PatientRecord, DiagnosisRecord, PublicPatientRecord, Gender };
+type NewPatientEntry = z.infer<typeof NewPatientEntryValidator>;
+
+export {
+  PatientRecord,
+  DiagnosisRecord,
+  PublicPatientRecord,
+  Gender,
+  NewPatientEntry,
+};

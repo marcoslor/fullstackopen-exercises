@@ -1,5 +1,5 @@
 const Header = ({ courseName }: { courseName: string }) => {
-    return (<h1>{courseName}</h1>)
-}
+  return <h1>{courseName}</h1>;
+};
 
-export default Header
+export default Header;

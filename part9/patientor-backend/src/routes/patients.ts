@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   addPatient,
+  getPatients,
   getPublicPatientRecords,
 } from "../services/patientsService";
 import { NewPatientEntryValidator } from "../validators";
@@ -20,6 +21,10 @@ router.post("/", (req, res) => {
   } catch (e) {
     res.status(400).send(e.message);
   }
+});
+
+router.get("/:id", (req, res) => {
+  res.send(getPatients().find((patient) => patient.id === req.params.id));
 });
 
 export default router;

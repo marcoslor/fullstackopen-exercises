@@ -4,6 +4,8 @@ const genders = ["other", "female", "male"] as const;
 
 const GenderValidator = z.enum(genders);
 
+const EntryValidator = z.object({});
+
 const PatientRecordValidator = z.object({
   id: z.string(),
   name: z.string(),
@@ -11,10 +13,12 @@ const PatientRecordValidator = z.object({
   ssn: z.string(),
   gender: GenderValidator,
   occupation: z.string(),
+  entries: z.array(EntryValidator).optional(),
 });
 
 const PublicPatientRecordValidator = PatientRecordValidator.omit({
   ssn: true,
+  entries: true,
 });
 
 const NewPatientEntryValidator = PatientRecordValidator.omit({
@@ -26,4 +30,5 @@ export {
   PublicPatientRecordValidator,
   NewPatientEntryValidator,
   GenderValidator,
+  EntryValidator,
 };

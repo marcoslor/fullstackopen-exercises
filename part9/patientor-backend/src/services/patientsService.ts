@@ -1,7 +1,13 @@
 import { v1 as uuid } from "uuid";
 
 import patients from "../data/patients";
-import { NewPatientEntry, PatientRecord, PublicPatientRecord } from "../types";
+import {
+  NewPatientEntry,
+  NewPatientRecord,
+  PatientEntry,
+  PatientRecord,
+  PublicPatientRecord,
+} from "../types";
 
 const getPatients = (): Array<PatientRecord> => {
   return patients;
@@ -17,14 +23,31 @@ const getPublicPatientRecords = (): PublicPatientRecord[] => {
   }));
 };
 
-const addPatient = (patient: NewPatientEntry): PatientRecord => {
-  const newPatientEntry = {
+const addPatient = (patient: NewPatientRecord): PatientRecord => {
+  const NewPatientRecord = {
     id: uuid(),
     ...patient,
   };
 
-  patients.push(newPatientEntry);
+  patients.push(NewPatientRecord);
+  return NewPatientRecord;
+};
+
+const addEntry = (
+  patient: PatientRecord,
+  entry: NewPatientEntry
+): PatientEntry => {
+  const newPatientEntry = {
+    id: uuid(),
+    ...entry,
+  };
+
+  if (!patient.entries) {
+    patient.entries = [];
+  }
+
+  patient.entries.push(newPatientEntry);
   return newPatientEntry;
 };
 
-export { getPatients, getPublicPatientRecords, addPatient };
+export { getPatients, getPublicPatientRecords, addPatient, addEntry };

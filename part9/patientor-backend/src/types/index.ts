@@ -3,32 +3,33 @@ import { z } from "zod";
 import {
   PatientRecordValidator,
   PublicPatientRecordValidator,
-  NewPatientEntryValidator,
+  NewPatientRecordValidator,
   GenderValidator,
-  EntryValidator,
+  PatientEntryValidator,
+  ExpandedDiagnosisValidator,
+  NewPatientEntryValidator,
 } from "../validators";
 
 type Gender = z.infer<typeof GenderValidator>;
 
-interface DiagnosisRecord {
-  code: string;
-  name: string;
-  latin?: string;
-}
+type ExpandedDiagnosis = z.infer<typeof ExpandedDiagnosisValidator>;
+
+type PatientEntry = z.infer<typeof PatientEntryValidator>;
+
+type NewPatientEntry = z.infer<typeof NewPatientEntryValidator>;
 
 type PatientRecord = z.infer<typeof PatientRecordValidator>;
 
 type PublicPatientRecord = z.infer<typeof PublicPatientRecordValidator>;
 
-type NewPatientEntry = z.infer<typeof NewPatientEntryValidator>;
-
-type Entry = z.infer<typeof EntryValidator>;
+type NewPatientRecord = z.infer<typeof NewPatientRecordValidator>;
 
 export {
-  PatientRecord,
-  DiagnosisRecord,
-  PublicPatientRecord,
   Gender,
+  PatientRecord,
+  ExpandedDiagnosis,
+  PublicPatientRecord,
+  NewPatientRecord,
+  PatientEntry,
   NewPatientEntry,
-  Entry,
 };

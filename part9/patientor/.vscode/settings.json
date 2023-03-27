@@ -2,5 +2,11 @@
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true        
-    }
+    }, 
+    "eslint.workingDirectories": [
+      "./"
+    ],
+    "[javascriptreact]": {
+      "workbench.editor.labelFormat": "${activeEditorShort}${separator}${rootName}"
+    },
 }

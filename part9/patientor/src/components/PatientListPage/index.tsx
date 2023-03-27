@@ -8,11 +8,10 @@ import {
   TableCell,
   TableRow,
   TableBody,
-  Link as MuiLink,
 } from "@mui/material";
 import axios from "axios";
 
-import { PatientFormValues, Patient } from "../../types";
+import { type PatientFormValues, type Patient } from "../../types";
 import AddPatientModal from "../AddPatientModal";
 
 import HealthRatingBar from "../HealthRatingBar";
@@ -29,7 +28,9 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
-  const openModal = (): void => setModalOpen(true);
+  const openModal = (): void => {
+    setModalOpen(true);
+  };
 
   const closeModal = (): void => {
     setModalOpen(false);
@@ -43,7 +44,10 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
       setModalOpen(false);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
-        if (e?.response?.data && typeof e?.response?.data === "string") {
+        if (
+          Boolean(e?.response?.data) &&
+          typeof e?.response?.data === "string"
+        ) {
           const message = e.response.data.replace(
             "Something went wrong. Error: ",
             ""
@@ -99,7 +103,12 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
         error={error}
         onClose={closeModal}
       />
-      <Button variant="contained" onClick={() => openModal()}>
+      <Button
+        variant="contained"
+        onClick={() => {
+          openModal();
+        }}
+      >
         Add New Patient
       </Button>
     </div>
